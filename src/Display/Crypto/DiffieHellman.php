@@ -2,7 +2,11 @@
 
 namespace Display\Crypto;
 
-
+/**
+ * Class DiffieHellman for communication self encryption
+ *
+ * @package Display\Crypto
+ */
 class DiffieHellman
 {
     /**
@@ -30,7 +34,10 @@ class DiffieHellman
     private $publicKey;
 
     /**
-     *
+     * @param null $prime
+     * @param null $generator
+     * @param int $base
+     * @param null $forcePrivate
      */
     public function __construct($prime = null, $generator = null, $base = 16, $forcePrivate = null)
     {
@@ -78,8 +85,6 @@ class DiffieHellman
      *
      * @param int $base
      * @return string
-     *
-     *
      */
     public function getPublicKey($base = 10)
     {
@@ -87,6 +92,8 @@ class DiffieHellman
     }
 
     /**
+     * Calculate secret
+     *
      * @param string $pk is the other side public key
      * @param int $base
      * @return string
