@@ -107,7 +107,7 @@ class DiffieHellman
 
     /**
      * Get random safe prime for DH
-     *
+     * @link http://www.ietf.org/rfc/rfc3526.txt
      * @return mixed
      */
     public function randomPrime()
