@@ -63,4 +63,20 @@ class DiffieHellmanTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($serverSecret, $clientSecret);
     }
+
+    public function testSerialize() {
+        $dh = new DiffieHellman(23, 5, 10, 6);
+        $str = serialize($dh);
+
+        /** @var DiffieHellman $dh2 */
+        $dh2 = unserialize($str);
+
+        $this->assertEquals($dh2->getPrime(16), '17');
+        $this->assertEquals($dh2->getGenerator(16), '5');
+        $this->assertEquals($dh2->getPrivateKey(16), '6');
+        $this->assertEquals($dh2->getPublicKey(16), '8');
+        //
+        $this->assertEquals($dh2->getSecret(19, 16), '2');
+
+    }
 }

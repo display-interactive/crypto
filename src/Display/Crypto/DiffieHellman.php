@@ -7,7 +7,7 @@ namespace Display\Crypto;
  *
  * @package Display\Crypto
  */
-class DiffieHellman
+class DiffieHellman implements \Serializable
 {
     /**
      * Primary root mod p of $prime
@@ -50,7 +50,7 @@ class DiffieHellman
         }
 
         $this->privateKey = null === $forcePrivate  ? gmp_random() : gmp_init($forcePrivate);
-        $this->publicKey = gmp_powm($this->generator, $this->privateKey, $this->prime);
+        $this->initPublicKey();
     }
 
     /**
@@ -98,9 +98,9 @@ class DiffieHellman
      * @param int $base
      * @return string
      */
-    public function getSecret($pk, $base = 10)
-    {
-        $secret = gmp_powm(gmp_init($pk), $this->privateKey, $this->prime);
+    public function getSecret($pk, $base = 10) {
+
+        $secret = gmp_powm(gmp_init($pk, $base), $this->privateKey, $this->prime);
 
         return gmp_strval($secret, $base);
     }
@@ -122,5 +122,31 @@ class DiffieHellman
         );
 
         return $primes[array_rand($primes)];
+    }
+
+    /**
+     * @return string
+     */
+    public function serialize() {
+        $str = $this->getPrivateKey(16).';'.$this->getPrime(16).';'.$this->getGenerator(16);
+        return $str;
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized) {
+        $data = preg_split('/;/', $serialized);
+        $this->prime = gmp_init($data[1], 16);
+        $this->privateKey = gmp_init($data[0], 16);
+        $this->generator = gmp_init($data[2], 16);
+        $this->initPublicKey();
+    }
+
+    /**
+     * calculate public key
+     */
+    private function initPublicKey() {
+        $this->publicKey = gmp_powm($this->generator, $this->privateKey, $this->prime);
     }
 }
