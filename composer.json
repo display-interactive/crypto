@@ -1,7 +1,6 @@
 {
-    "name": "display/crypto",
+    "name": "display-interactive/crypto",
     "description": "Crypto lib for display",
-    "version": "0.1",
     "keywords": ["crypto"],
     "homepage": "http://github.com/display-interactive/crypto",
     "type": "library",
