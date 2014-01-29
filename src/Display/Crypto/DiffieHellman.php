@@ -49,7 +49,7 @@ class DiffieHellman implements \Serializable
             $this->generator = gmp_init($generator, $base);
         }
 
-        $this->privateKey = null === $forcePrivate  ? gmp_random() : gmp_init($forcePrivate);
+        $this->privateKey = null === $forcePrivate  ? gmp_random() : gmp_init($forcePrivate, $base);
         $this->initPublicKey();
     }
 
